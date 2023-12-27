@@ -1,61 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app_ver1/model/image_item.dart';
+import 'package:image_search_app_ver1/repository/image_item_repository.dart';
+import 'package:image_search_app_ver1/screen/widget/image_item_widget.dart';
 
-class ImageSearchScreen extends StatefulWidget {
-  const ImageSearchScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<ImageSearchScreen> createState() => _ImageSearchScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _ImageSearchScreenState extends State<ImageSearchScreen> {
-  final List<String> stringList = ['111', '222'];
+class _MainScreenState extends State<MainScreen> {
+  final searchTextEditingController = TextEditingController();
+
+  final repository = MockImageItemRepository();
+
+  List<ImageItem> imageItems = [];
+  bool isLoading = false;
+
+  Future<void> searchImage(String query) async {
+    imageItems = await repository.getImageItems(query);
+
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    searchTextEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(32.0),
           child: Column(
             children: [
               TextField(
+                controller: searchTextEditingController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Color(0xFF4FB6B2),
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Color(0xFF4FB6B2),
                     ),
                   ),
-                  suffixIcon: Icon(
-                    Icons.search,
-                    color: Color(0xFF4FB6B2),
-                  ),
                   hintText: 'Search',
+                  suffixIcon: IconButton(
+                    icon: const Icon(
+                      Icons.search,
+                      color: Color(0xFF4FB6B2),
+                    ),
+                    onPressed: () =>
+                        searchImage(searchTextEditingController.text),
+                  ),
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 24),
               Expanded(
                 child: GridView.builder(
-                  itemCount: 100, // 총 아이템 수
+                  itemCount: imageItems.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      color: Colors.purple,
-                    );
+                    final imageItem = imageItems[index];
+                    return ImageItemWidget(imageItem: imageItem);
                   },
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // 열
-                    crossAxisSpacing: 10, // 열 공백
-                    mainAxisSpacing: 10, // 행 공백
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 32,
+                    mainAxisSpacing: 32,
                   ),
                 ),
               ),
