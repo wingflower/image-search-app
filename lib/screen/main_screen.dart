@@ -19,9 +19,14 @@ class _MainScreenState extends State<MainScreen> {
   bool isLoading = false;
 
   Future<void> searchImage(String query) async {
+    setState(() {
+      isLoading = true;
+    });
     imageItems = await repository.getImageItems(query);
 
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
