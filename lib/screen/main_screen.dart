@@ -72,7 +72,9 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              Expanded(
+              isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Expanded(
                 child: GridView.builder(
                   itemCount: imageItems.length,
                   itemBuilder: (context, index) {
