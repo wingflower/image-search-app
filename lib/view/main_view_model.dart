@@ -4,9 +4,13 @@ import '../data/model/image_item.dart';
 import '../data/repository/image_item_repository.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final repository = PixabayImageItemRepository();
+  final _repository = PixabayImageItemRepository();
 
-  List<ImageItem> imageItems = [];
+  get repository => _repository;
+
+  List<ImageItem> _imageItems = [];
+
+  List<ImageItem> get imageItems => _imageItems;
 
   bool isLoading = false;
 
@@ -14,7 +18,7 @@ class MainViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    imageItems = await repository.getImageItems(query);
+    _imageItems = await repository.getImageItems(query);
 
     isLoading = false;
     notifyListeners();
