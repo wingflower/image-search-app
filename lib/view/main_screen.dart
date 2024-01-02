@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app_ver1/model/image_item.dart';
-import 'package:image_search_app_ver1/repository/image_item_repository.dart';
-import 'package:image_search_app_ver1/screen/widget/image_item_widget.dart';
+import 'package:image_search_app_ver1/view/main_view_model.dart';
+
+import 'widget/image_item_widget.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,22 +14,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final searchTextEditingController = TextEditingController();
 
-  final repository = PixabayImageItemRepository();
-
-  List<ImageItem> imageItems = [];
-  bool isLoading = false;
-
-  Future<void> searchImage(String query) async {
-    setState(() {
-      isLoading = true;
-    });
-    imageItems = await repository.getImageItems(query);
-
-    setState(() {
-      isLoading = false;
-    });
-  }
-
   @override
   void dispose() {
     searchTextEditingController.dispose();
@@ -37,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<MainViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -67,27 +53,28 @@ class _MainScreenState extends State<MainScreen> {
                       color: Color(0xFF4FB6B2),
                     ),
                     onPressed: () =>
-                        searchImage(searchTextEditingController.text),
+                        viewModel.searchImage(searchTextEditingController.text),
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              isLoading
-              ? Center(child: CircularProgressIndicator())
-              : Expanded(
-                child: GridView.builder(
-                  itemCount: imageItems.length,
-                  itemBuilder: (context, index) {
-                    final imageItem = imageItems[index];
-                    return ImageItemWidget(imageItem: imageItem);
-                  },
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 32,
-                    mainAxisSpacing: 32,
-                  ),
-                ),
-              ),
+              viewModel.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: viewModel.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = viewModel.imageItems[index];
+                          return ImageItemWidget(imageItem: imageItem);
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 32,
+                          mainAxisSpacing: 32,
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),

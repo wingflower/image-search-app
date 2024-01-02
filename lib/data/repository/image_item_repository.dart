@@ -1,7 +1,6 @@
-import 'package:image_search_app_ver1/data_source/pixabay_api.dart';
-import 'package:image_search_app_ver1/mapper/image_mapper.dart';
-import 'package:image_search_app_ver1/model/image_item.dart';
-
+import '../data_source/pixabay_api.dart';
+import '../mapper/image_mapper.dart';
+import '../model/image_item.dart';
 
 abstract interface class ImageItemRepository {
   Future<List<ImageItem>> getImageItems(String query);

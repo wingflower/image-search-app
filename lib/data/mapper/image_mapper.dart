@@ -1,5 +1,5 @@
-import 'package:image_search_app_ver1/dto/pixabay_dto.dart';
-import 'package:image_search_app_ver1/model/image_item.dart';
+import '../dto/pixabay_dto.dart';
+import '../model/image_item.dart';
 
 extension DtoToModel on Hits {
   ImageItem toImageItem() {

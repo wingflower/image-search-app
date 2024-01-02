@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:image_search_app_ver1/dto/pixabay_dto.dart';
+
+import '../dto/pixabay_dto.dart';
 
 
 class PixabayApi {

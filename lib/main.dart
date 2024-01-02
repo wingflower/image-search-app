@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app_ver1/screen/main_screen.dart';
+import 'package:image_search_app_ver1/view/main_view_model.dart';
+import 'package:provider/provider.dart';
+
+import 'view/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +16,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-                                                                                                                                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      home: ChangeNotifierProvider(
+        create: (_) => MainViewModel(),
+        child: const MainScreen(),
+      ),
+      // home: const MainScreen(),
     );
   }
 }
