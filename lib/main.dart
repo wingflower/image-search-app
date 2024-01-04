@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app_ver1/data/repository/image_item_repository_impl.dart';
+import 'package:image_search_app_ver1/di/di_setup.dart';
 import 'package:image_search_app_ver1/view/main_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'view/main_screen.dart';
 
 void main() {
+  diSetup();
   runApp(const MyApp());
 }
 
@@ -16,10 +19,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: ChangeNotifierProvider(
-        create: (_) => MainViewModel(),
+        create: (_) => MainViewModel(
+          repository: ImageItemRepositoryImpl(),
+        ),
         child: const MainScreen(),
       ),
       // home: const MainScreen(),

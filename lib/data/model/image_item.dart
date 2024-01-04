@@ -11,10 +11,10 @@ class ImageItem {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ImageItem &&
-          runtimeType == other.runtimeType &&
-          imageUrl == other.imageUrl &&
-          tags == other.tags);
+          (other is ImageItem &&
+              runtimeType == other.runtimeType &&
+              imageUrl == other.imageUrl &&
+              tags == other.tags);
 
   @override
   int get hashCode => imageUrl.hashCode ^ tags.hashCode;
@@ -49,4 +49,22 @@ class ImageItem {
   }
 
 //</editor-fold>
+}
+
+enum NumOfImages {
+  one(1, 'one'),
+  two(2, 'two'),
+  three(3, 'three'),
+  four(4, 'four'),
+  five(5, 'five'),
+  six(6, 'six'),
+  seven(7, 'seven'),
+  eight(8, 'eight'),
+  nine(9, 'nine'),
+  ten(10, 'ten');
+
+  final int numOfImages;
+  final String label;
+
+  const NumOfImages(this.numOfImages, this.label);
 }
