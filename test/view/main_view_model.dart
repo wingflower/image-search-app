@@ -16,12 +16,13 @@ void main() {
 
   test('이미지는 입력된 수만큼 반환되어야 한다', () async {
     final viewModel = getIt<MainViewModel>();
+    final state = viewModel.state;
 
-    expect(viewModel.imageItems.length, 0);
+    expect(state.imageItems.length, 0);
 
     await viewModel.searchImage('apple', 3);
 
-    expect(viewModel.imageItems.length, 3);
+    expect(state.imageItems.length, 3);
     return null;
   });
 }
