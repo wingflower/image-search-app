@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 
 import '../data/model/image_item.dart';
 
-part '.freezed.dart';
+part 'main_state.freezed.dart';
+part 'main_state.g.dart';
 
 @freezed
 class MainState with _$MainState {
