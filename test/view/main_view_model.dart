@@ -18,11 +18,11 @@ void main() {
     final viewModel = getIt<MainViewModel>();
     final state = viewModel.state;
 
-    expect(state.imageItems.length, 0);
+    expect(viewModel.state.imageItems.length, 0);
 
     await viewModel.searchImage('apple', 3);
 
-    expect(state.imageItems.length, 3);
+    expect(viewModel.state.imageItems.length, 3);
     return null;
   });
 }
