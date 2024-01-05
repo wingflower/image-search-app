@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app_ver1/core/result.dart';
+import 'package:image_search_app_ver1/data/model/image_item.dart';
 
 import '../data/repository/image_item_repository.dart';
 import 'main_state.dart';
@@ -29,22 +31,37 @@ class MainViewModel extends ChangeNotifier {
   //
   // bool get isLoading => _isLoading;
 
-  Future<bool> searchImage(String query, int numOfImages) async {
+  Future<void> searchImage(String query, int numOfImages) async {
     // _isLoading = true;
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    try{
-      final results = (await _repository.getImageItems(query)).take(numOfImages).toList();
-      _state = state.copyWith(
-        isLoading: false,
-        imageItems: results,
-      );
-      notifyListeners();
-      return true;
-    } catch (e) {
-      return false;
+    final result = await _repository.getImageItems(query);
+
+    switch (result) {
+      case Success<List<ImageItem>>():
+        _state = state.copyWith(
+          isLoading: false,
+          imageItems: result.data.take(numOfImages).toList(),
+        );
+        notifyListeners();
+      case Error<List<ImageItem>>():
+        print('Error!!!!');
+      case Loading<List<ImageItem>>():
+        print('Loading!!!!');
     }
+
+    // try{
+    //   final results = (await _repository.getImageItems(query)).take(numOfImages).toList();
+    //   _state = state.copyWith(
+    //     isLoading: false,
+    //     imageItems: results,
+    //   );
+    //   notifyListeners();
+    //   return true;
+    // } catch (e) {
+    //   return false;
+    // }
     // _state = state.copyWith(
     //   isLoading: false,
     //   imageItems: List.unmodifiable(
